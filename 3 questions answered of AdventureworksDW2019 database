@@ -1,0 +1,89 @@
+
+--Show each customer's sales by customer age group
+
+With CTE_main as 
+(
+
+select t3.EnglishCountryRegionName,
+	DateDiff(month,BirthDate,orderdate)/12 As Age,
+	Salesordernumber
+from AdventureWorksDW2019.dbo.FactInternetSales t1
+JOIN AdventureWorksDW2019.dbo.DimCustomer t2
+on t1.CustomerKey = t2.CustomerKey
+JOIN adventureWorksDW2019.dbo.DimGeography t3
+on t2.GeographyKey=t3.GeographyKey
+)
+
+Select EnglishCountryRegionName,
+Case When	Age < 30 then 'a:<under 30'
+	 When	Age  between 30 and 40  then 'b:30 - 40'
+	 When	Age  between 40 and 50  then 'c:40 - 50'
+	 When	Age  between 50 and 60  then 'd:50 - 60'
+	 When	Age  > 60 then 'e: over 60'	
+	 Else 'Other'
+	 End as age_group,
+	 COUNT(salesordernumber) as sales
+from CTE_main
+
+group by   
+EnglishCountryRegionName,
+Case When	Age < 30 then 'a:<under 30'
+	 When	Age  between 30 and 40  then 'b:30 - 40'
+	 When	Age  between 40 and 50  then 'c:40 - 50'
+	 When	Age  between 50 and 60  then 'd:50 - 60'
+	 When	Age  > 60 then 'e: over 60'	
+	 Else 'Other'
+	 END
+	 order by EnglishCountryRegionName,age_group
+
+--show each product sales by age group
+
+
+With CTE_MAIN as 
+(
+select t4.[EnglishProductName],t5.EnglishProductSubcategoryName,
+	DateDiff(month,BirthDate,orderdate)/12	 As AGE,
+	[SalesOrderNumber]
+from AdventureWorksDW2019.dbo.FactInternetSales t1
+JOIN AdventureWorksDW2019.dbo.DimCustomer t2
+on t1.CustomerKey = t2.CustomerKey
+JOIN adventureWorksDW2019.dbo.DimGeography t3
+on t2.GeographyKey=t3.GeographyKey
+Join AdventureWorksDW2019.dbo.DimProduct t4
+on t1.ProductKey= t4.ProductKey
+join AdventureWorksDW2019.dbo.DimProductSubcategory t5
+on t4.ProductSubcategoryKey = t5.ProductSubcategoryKey
+)
+
+Select  EnglishProductSubcategoryName As Product_type,
+	 CASE When	Age < 30 then 'a:under 30'
+	 When	Age  between 30 and 40  then 'b:30 - 40'
+	 When	Age  between 40 and 50  then 'c:40 - 50'
+	 When	Age  between 50 and 60  then 'd:50 - 60'
+	 When	Age  > 60 then 'e: over 60'	
+	 Else 'Other'
+	End as age_group,
+	COUNT(SalesOrderNumber) As Sales
+ 
+FROM CTE_MAIN
+group by EnglishProductSubCategoryName, age,
+	 CASE When	Age < 30 then 'a:under 30'
+	 When	Age  between 30 and 40  then 'b: 30 - 40'
+	 When	Age  between 40 and 50  then 'c: 40 - 50'
+	 When	Age  between 50 and 60  then 'd: 50 - 60'
+	 When	Age  > 60 then 'e: over 60'	
+	 Else 'Other'
+	 END   
+	 order by product_type, age_group
+
+-- show monthly sales for Austrailia and USA compared for the year 2012
+SELECT
+    substring(CAST([OrderDateKey]as char) ,1,6) as [Month_Key]
+	  ,[SalesOrderNumber]
+	  ,[OrderDate]
+	  ,t2.SalesTerritoryCountry
+From AdventureWorksDW2019.dbo.FactInternetSales t1
+JOIN AdventureWorksDW2019.dbo.DimSalesTerritory t2
+on t1.SalesTerritoryKey = t2.SalesTerritoryKey
+where SalesTerritoryCountry IN ('Australia','United States')
+AND substring(CAST([OrderDateKey]as char) ,1,4) = '2012'
