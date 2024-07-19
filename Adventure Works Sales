@@ -19,13 +19,6 @@ join AdventureWorksDW2019.dbo.DimProductSubcategory t5
 on t4.ProductSubcategoryKey = t5.ProductSubcategoryKey
 Where OrderDate between '20130101' and '20131231'
 
-Output first 10 of 52,801 records
-OrderDateKey	OrderDate	SalesOrderNumber	SalesAmount	BirthDate	YearlyIncome	TotalChildren	EnglishCountryRegionName	EnglishProductName	EnglishProductSubcategoryName
-20130101	00:00.0	SO51247	2294.99	7/9/1966	130000	3	Germany	Mountain-200 Black, 42	Mountain Bikes
-20130101	00:00.0	SO51247	4.99	7/9/1966	130000	3	Germany	Water Bottle - 30 oz.	Bottles and Cages
-20130101	00:00.0	SO51247	9.99	7/9/1966	130000	3	Germany	Mountain Bottle Cage	Bottles and Cages
-20130101	00:00.0	SO51248	2443.35	5/12/1960	90000	4	France	Road-250 Black, 52	Road Bikes
-20130101	00:00.0	SO51249	2319.99	9/19/1966	10000	1	United Kingdom	Mountain-200 Silver, 38	Mountain Bikes
-20130101	00:00.0	SO51249	9.99	9/19/1966	10000	1	United Kingdom	Mountain Bottle Cage	Bottles and Cages
-20130101	00:00.0	SO51249	4.99	9/19/1966	10000	1	United Kingdom	Water Bottle - 30 oz.	Bottles and Cages
-20130101	00:00.0	SO51250	2443.35	10/1/1968	40000	1	United Kingdom	Road-250 Black, 48	Road Bikes
+In Micrsoft SQL Server Studio... plug in the above code and then control A on output. Copy with headers into an excel spreadsheet. Rename as Tableau Data. Upload into Tableau where the dashboard is made.
+									
+
